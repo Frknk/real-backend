@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkg = ['python312Full']
+nixPkg = ['python313']
 
 [phases.build]
 cmds = ["echo Building! && ls -l"]
