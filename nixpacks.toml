@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkg = ['python313']
+
+[phases.install]
+cmds = ["python -m venv /opt/venv && . /opt/venv/bin/activate && pip install poetry && poetry install --no-dev --no-interaction --no-ansi"]
+
+[phases.build]
+cmds = ["echo Building! && ls -l"]
+
+[start]
+cmd = "echo Starting! . /opt/venv/bin/activate && python main.py"
