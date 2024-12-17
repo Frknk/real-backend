@@ -4,7 +4,7 @@ from pydantic import BaseModel, field_validator
 
 class Customer(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    dni : int = Field(index=True)
+    dni : int = Field(index=True, unique=True)
     name: str
     last_name: str
     email: str
