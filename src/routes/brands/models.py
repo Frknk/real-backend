@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 class Brand(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
-    name: str
+    name: str = Field(index=True, unique=True)
     products : List["Product"] = Relationship(back_populates="brand")
 
 

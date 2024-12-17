@@ -37,7 +37,7 @@ def read_sale(sale_id: int, session: Session = Depends(get_session)):
             price=product.price,  # Assuming you have a price field in Product
             brand=product.brand,
             category=product.category,  # If you have a category
-            provider_id=product.provider_id,  # If applicable
+            provider=product.provider,  # If applicable
             quantity=product_sale.quantity
         )
         products_details.append(product_detail)
@@ -51,6 +51,10 @@ def read_sale(sale_id: int, session: Session = Depends(get_session)):
     )
     
     return sale_read
+
+def read_sales(session: Session = Depends(get_session)):
+    sales = session.exec(select(Sale)).all()
+    return sales
 
 def create_sale(sale_input: SaleCreate, session: Session = Depends(get_session)):
     # Fetch products

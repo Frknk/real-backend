@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 class Provider(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     ruc: int
-    name: str
+    name: str = Field(index=True, unique=True)
     address: str
     phone: str
     email: str

@@ -2,12 +2,12 @@ from fastapi import APIRouter, Depends
 from sqlmodel import Session
 
 from src.database import get_session
-from src.routes.providers.models import ProviderRead, ProviderCreate, ProviderUpdate
+from src.routes.providers.models import ProviderRead, ProviderCreate, ProviderUpdate, Provider
 from src.routes.providers.operations import create_provider, get_providers, get_provider, update_provider, delete_provider
 
 router = APIRouter()
 
-@router.post("", response_model=ProviderCreate)
+@router.post("", response_model=Provider)
 def create_provider_view(provider: ProviderCreate, session: Session = Depends(get_session)):
     return create_provider(provider, session)
 

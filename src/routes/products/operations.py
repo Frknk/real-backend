@@ -35,9 +35,10 @@ def update_product(product_id: int, product: ProductUpdate, session: Session = D
     _product.name = product.name
     _product.description = product.description
     _product.stock = product.stock
-    _product.provider_id = product.provider_id
-    _product.category_id = product.category_id
-    _product.brand_id = product.brand_id
+    _product.provider_name = product.provider_name
+    _product.category_name = product.category_name
+    _product.brand_name = product.brand_name
+    _product.price = product.price
     session.add(_product)
     session.commit()
     session.refresh(_product)

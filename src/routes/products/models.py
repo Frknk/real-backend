@@ -18,11 +18,11 @@ class Product(SQLModel, table=True):
     description: str
     stock: int = Field(default=0)
     price : float = Field(default=0)
-    provider_id: int | None = Field(default=None, foreign_key="provider.id")
+    provider_name: str | None = Field(default=None, foreign_key="provider.name")
     provider: Optional["Provider"] = Relationship(back_populates="products")
-    category_id: int | None = Field(default=None, foreign_key="category.id")
+    category_name: str | None = Field(default=None, foreign_key="category.name")
     category: Optional["Category"] = Relationship(back_populates="products")
-    brand_id: int = Field(default=None, foreign_key="brand.id")
+    brand_name: str = Field(default=None, foreign_key="brand.name")
     brand: Optional["Brand"] = Relationship(back_populates="products")
     created_at: datetime.datetime = Field(default=datetime.datetime.now())
     sales : List["Sale"] = Relationship(back_populates="products", link_model=ProductSale)
@@ -31,22 +31,22 @@ class ProductUpdate(BaseModel):
     name: Optional[str]
     description: Optional[str]
     stock: Optional[int]
-    provider_id: Optional[int]
-    category_id: Optional[int]
-    brand_id: Optional[int]
+    provider_name: Optional[str]
+    category_name: Optional[str]
+    brand_name: Optional[str]
 
 class ProductCreate(BaseModel):
     name: str
     description: str
     stock: int
-    provider_id: int
-    category_id: int
-    brand_id: int
+    price: float
+    provider_name: str
+    category_name: str
+    brand_name: str
 
 class SimpleCategoryRead(BaseModel):
     id: int
     name: str
-    description: str
 
 class SimpleBrandRead(BaseModel):
     id: int
@@ -65,6 +65,7 @@ class ProductRead(BaseModel):
     name: str
     description: str
     stock: int
+    price: float
     category: Optional["SimpleCategoryRead"] = None
     brand: Optional["SimpleBrandRead"] = None
     provider: Optional["SimpleProviderRead"] = None
