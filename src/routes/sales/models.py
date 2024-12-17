@@ -20,7 +20,7 @@ class Sale(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     total: float
     products: List["Product"] = Relationship(back_populates="sales", link_model=ProductSale)
-    created_at: datetime.datetime = Field(default=datetime.datetime.now())
+    created_at: datetime.datetime = Field(default=datetime.datetime.now)
     customer_dni : int = Field(foreign_key="customer.dni")
 
 

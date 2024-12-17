@@ -5,7 +5,8 @@ from src.database import get_session
 from sqlmodel import Session
 from datetime import timedelta
 
-from src.routes.auth.operations import get_user_by_username, create_user, authenticate_user, create_access_token, verify_token, get_current_user, ACCESS_TOKEN_EXPIRE_MINUTES
+from src.routes.auth.operations import get_user_by_username, create_user, authenticate_user, create_access_token, verify_token, get_current_user
+from src.config import ACCESS_TOKEN_EXPIRE_MINUTES
 from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter()

@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from src.routes import root_router
 from fastapi.middleware.cors import CORSMiddleware
 
-ALLOWED_ORIGIN = "http://localhost:3000"
+from src.config import ALLOWED_ORIGIN
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

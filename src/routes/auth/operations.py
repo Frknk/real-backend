@@ -8,11 +8,8 @@ from src.database import get_session
 from fastapi.security import OAuth2PasswordBearer
 from sqlmodel import select
 from fastapi import Depends, HTTPException
+from src.config import SECRET_KEY, ALGORITHM
 
-
-SECRET_KEY = "frank123"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
