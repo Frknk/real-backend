@@ -1,0 +1,32 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main  # Change this to the branch you want to trigger the workflow on
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the GitHub repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Log in to Docker Hub (or another Docker registry)
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }} # Set this in your repo's secrets
+          password: ${{ secrets.DOCKER_PASSWORD }} # Set this in your repo's secrets
+
+      # Build the Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/real-backend:${{ github.sha }} .
+
+      # Push the Docker image
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/real-backend:${{ github.sha }}
