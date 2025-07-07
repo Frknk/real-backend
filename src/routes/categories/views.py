@@ -1,4 +1,4 @@
-from src.routes.categories.models import CategoryRead, CategoryUpdate
+from src.routes.categories.models import CategoryRead, CategoryUpdate, SimpleCategoryRead
 from src.routes.categories.operations import (
     get_categories,
     create_category,
@@ -23,7 +23,7 @@ def read_category(category_id: int, session: Session = Depends(get_session)):
     return get_category(category_id, session)
 
 
-@router.post("", response_model=CategoryUpdate)
+@router.post("", response_model=SimpleCategoryRead)
 def add_category(category: CategoryUpdate, session: Session = Depends(get_session)):
     return create_category(category, session)
 
