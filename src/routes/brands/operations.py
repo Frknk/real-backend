@@ -5,6 +5,18 @@ from sqlmodel import Session, select
 
 
 def create_brand(new_brand: BrandCreate, session: Session = Depends(get_session)):
+    if new_brand.name is None or new_brand.name.strip() == "":
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Brand name cannot be empty",
+        )
+    existing_brand = session.exec(
+        select(Brand).where(Brand.name == new_brand.name)
+    ).first()
+    if existing_brand:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Brand already exists"
+        )
     brand = Brand.model_validate(new_brand)
     session.add(brand)
     session.commit()
