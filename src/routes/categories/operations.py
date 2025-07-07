@@ -89,13 +89,18 @@ def delete_category_by_name(category_name: str, session=Depends(get_session)):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Category not found"
         )
-    session.delete(category)
-    session.commit()
-    return category
+    else:
+        session.delete(category)
+        session.commit()
+        return category
 
 
 def delete_category(category_id: int, session=Depends(get_session)):
     category = session.get(Category, category_id)
+    if category is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Category not found"
+        )
     session.delete(category)
     session.commit()
     return category
