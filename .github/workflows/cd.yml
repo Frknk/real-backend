@@ -30,6 +30,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/real-backend:${{ github.ref_name }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/real-backend:${{ github.event.release.tag_name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
