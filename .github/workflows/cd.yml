@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: CD
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master  # Change this to the branch you want to trigger the workflow on
 
 jobs:
-  build-and-push:
+  build-and-push-docker-image:
     runs-on: ubuntu-latest
 
     steps:
