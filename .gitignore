@@ -11,3 +11,9 @@ wheels/
 
 # enviroment
 .env
+
+# Cache of pytest
+.pytest_cache/
+
+# Cache of ruff
+.ruff_cache/
