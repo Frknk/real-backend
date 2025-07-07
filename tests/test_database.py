@@ -1,4 +1,3 @@
-import pytest
 from sqlmodel import Session
 from src.database import init_db, get_session
 from src.routes.auth.models import User

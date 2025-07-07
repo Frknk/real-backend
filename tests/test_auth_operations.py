@@ -48,7 +48,7 @@ class TestAuthOperations:
         from sqlalchemy import text
 
         created_user = test_session.exec(
-            text(f"SELECT * FROM user WHERE username = 'newuser'")
+            text("SELECT * FROM user WHERE username = 'newuser'")
         ).first()
         assert created_user is not None
 
