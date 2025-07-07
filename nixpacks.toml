@@ -1,8 +1,0 @@
-[phases.setup]
-nixPkgs = ['python313']
-
-[phases.build]
-cmds = ["echo Building! && ls -l"]
-
-[start]
-cmd = "echo Starting! . /opt/venv/bin/activate && python main.py"
