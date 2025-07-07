@@ -30,6 +30,18 @@ def get_category_by_name(category_name: str, session=Depends(get_session)):
 
 
 def create_category(category: CategoryCreate, session=Depends(get_session)):
+    if category.name is None or category.name.strip() == "":
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Category name cannot be empty"
+        )
+    existing_category = session.exec(
+        select(Category).where(Category.name == category.name)
+    ).first()
+    if existing_category:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Category already exists"
+        )
     _category = Category.model_validate(category)
     session.add(_category)
     session.commit()

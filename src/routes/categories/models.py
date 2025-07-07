@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 class Category(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    name: str = Field(index=True, unique=True)
+    name: str = Field(index=True, unique=True, min_length=1)
     products: List["Product"] = Relationship(back_populates="category")
 
 
