@@ -1,5 +1,3 @@
-
-
 class TestApp:
     """Test cases for the main FastAPI application."""
 
