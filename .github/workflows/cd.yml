@@ -21,12 +21,16 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }} # Set this in your repo's secrets
           password: ${{ secrets.DOCKER_PASSWORD }} # Set this in your repo's secrets
 
-      # Build the Docker image
-      - name: Build Docker image
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/real-backend:${{ github.sha }} .
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-      # Push the Docker image
-      - name: Push Docker image
-        run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/real-backend:${{ github.sha }}
+      # Build and push Docker image with cache
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/real-backend:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
