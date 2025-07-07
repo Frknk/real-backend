@@ -46,7 +46,7 @@ def update_provider(
             status_code=status.HTTP_404_NOT_FOUND, detail="Provider not found"
         )
     _provider.name = provider.name
-    _provider.description = provider.description
+    _provider.ruc = provider.ruc
     _provider.email = provider.email
     _provider.phone = provider.phone
     _provider.address = provider.address
