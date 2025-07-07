@@ -1,4 +1,8 @@
-from src.routes.categories.models import CategoryRead, CategoryUpdate, SimpleCategoryRead
+from src.routes.categories.models import (
+    CategoryRead,
+    CategoryUpdate,
+    SimpleCategoryRead,
+)
 from src.routes.categories.operations import (
     get_categories,
     create_category,

@@ -1,7 +1,7 @@
-#from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import os
 
-#load_dotenv()
+# load_dotenv()
 
 # SECRET_KEY = "frank123"
 # ALGORITHM = "HS256"

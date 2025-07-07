@@ -187,7 +187,6 @@ class TestCustomerEndpoints:
         assert customer["dni"] == customer_id
         assert customer["name"] == sample_customer_data["name"]
 
-    
     # def test_update_customer_success(self, client, sample_customer_data):
     #     """Test successful customer update."""
     #     # Create a customer first

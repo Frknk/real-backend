@@ -26,7 +26,7 @@ class TestCategoryEndpoints:
         invalid_data = {"name": ""}  # Empty name
 
         response = client.post("/categories", json=invalid_data)
-        
+
         assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
     def test_create_category_duplicate_name(self, client, sample_category_data):

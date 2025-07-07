@@ -46,6 +46,7 @@ class TestAuthOperations:
 
         # Verify user was created in database
         from sqlalchemy import text
+
         created_user = test_session.exec(
             text(f"SELECT * FROM user WHERE username = 'newuser'")
         ).first()
