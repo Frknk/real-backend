@@ -39,6 +39,7 @@ class ProviderRead(BaseModel):
     email: str
     products: List["SimpleProductRead"] = []
 
+
 class ProviderUpdate(BaseModel):
     ruc: int
     name: str

@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 class Brand(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     name: str = Field(index=True, unique=True)
-    products : List["Product"] = Relationship(back_populates="brand")
+    products: List["Product"] = Relationship(back_populates="brand")
 
 
 class SimpleProductRead(BaseModel):
@@ -26,6 +26,7 @@ class BrandRead(BaseModel):
     id: int
     name: str
     products: List["SimpleProductRead"] = []
-    
+
+
 class BrandUpdate(BaseModel):
     name: str

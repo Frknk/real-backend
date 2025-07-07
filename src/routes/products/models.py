@@ -12,12 +12,13 @@ if TYPE_CHECKING:
     from src.routes.brands.models import Brand
     from src.routes.sales.models import Sale
 
+
 class Product(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     name: str
     description: str
     stock: int = Field(default=0)
-    price : float = Field(default=0)
+    price: float = Field(default=0)
     provider_name: str | None = Field(default=None, foreign_key="provider.name")
     provider: Optional["Provider"] = Relationship(back_populates="products")
     category_name: str | None = Field(default=None, foreign_key="category.name")
@@ -25,7 +26,10 @@ class Product(SQLModel, table=True):
     brand_name: str = Field(default=None, foreign_key="brand.name")
     brand: Optional["Brand"] = Relationship(back_populates="products")
     created_at: datetime.datetime = Field(default=datetime.datetime.now())
-    sales : List["Sale"] = Relationship(back_populates="products", link_model=ProductSale)
+    sales: List["Sale"] = Relationship(
+        back_populates="products", link_model=ProductSale
+    )
+
 
 class ProductUpdate(BaseModel):
     name: Optional[str]
@@ -34,6 +38,7 @@ class ProductUpdate(BaseModel):
     provider_name: Optional[str]
     category_name: Optional[str]
     brand_name: Optional[str]
+
 
 class ProductCreate(BaseModel):
     name: str
@@ -44,14 +49,17 @@ class ProductCreate(BaseModel):
     category_name: str
     brand_name: str
 
+
 class SimpleCategoryRead(BaseModel):
     id: int
     name: str
 
+
 class SimpleBrandRead(BaseModel):
     id: int
     name: str
-    
+
+
 class SimpleProviderRead(BaseModel):
     id: int
     ruc: int
@@ -59,6 +67,7 @@ class SimpleProviderRead(BaseModel):
     address: str
     phone: str
     email: str
+
 
 class ProductRead(BaseModel):
     id: int
@@ -69,6 +78,3 @@ class ProductRead(BaseModel):
     category: Optional["SimpleCategoryRead"] = None
     brand: Optional["SimpleBrandRead"] = None
     provider: Optional["SimpleProviderRead"] = None
-    
-
-    

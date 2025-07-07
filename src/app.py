@@ -6,11 +6,13 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src.config import ALLOWED_ORIGIN
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
     yield
-    
+
+
 def create_app():
     origins = [ALLOWED_ORIGIN]
     app = FastAPI(lifespan=lifespan)

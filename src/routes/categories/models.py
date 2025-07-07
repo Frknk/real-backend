@@ -31,5 +31,6 @@ class SimpleCategoryRead(BaseModel):
     id: int
     name: str
 
+
 class CategoryUpdate(BaseModel):
     name: str
