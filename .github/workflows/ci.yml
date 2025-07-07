@@ -18,7 +18,7 @@ jobs:
       - name: Ruff Check
         uses: astral-sh/ruff-action@v3
         with:
-          args: ruff check --output-format=github
+          args: check --output-format=github
   tests:
     needs: styles
     runs-on: ubuntu-latest
