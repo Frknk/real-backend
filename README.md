@@ -2,7 +2,7 @@
 
 This is a backend application built with FastAPI, designed to serve as the API for a comprehensive e-commerce or inventory management system. It features JWT-based authentication, and CRUD operations for products, categories, brands, providers, customers, and sales.
 
-[Frontend Link](https://github.com/Frknk/real-frontend)
+[Frontend Repo Link](https://github.com/Frknk/real-frontend)
 
 ## Features
 
