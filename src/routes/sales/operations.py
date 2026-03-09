@@ -85,7 +85,9 @@ def create_sale(sale_input: SaleCreate, session: Session = Depends(get_session))
 
     for item in sale_input.products:
         if item.quantity <= 0:
-            raise HTTPException(status_code=400, detail="Quantity must be greater than 0")
+            raise HTTPException(
+                status_code=400, detail="Quantity must be greater than 0"
+            )
         product = session.get(Product, item.product_id)
         if not product:
             raise HTTPException(

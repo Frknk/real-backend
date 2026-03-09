@@ -1,4 +1,9 @@
-from src.routes.products.models import Product, ProductRead, ProductCreate, ProductUpdate
+from src.routes.products.models import (
+    Product,
+    ProductCreate,
+    ProductRead,
+    ProductUpdate,
+)
 from src.routes.products.operations import (
     get_products,
     create_product,
