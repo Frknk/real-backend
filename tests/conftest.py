@@ -75,6 +75,21 @@ def client(test_session):
         app.dependency_overrides[get_session] = get_test_session
 
         with TestClient(app) as test_client:
+            seed_user = {
+                "username": "fixture_user",
+                "password": "fixture_password_123",
+            }
+            test_client.post("/auth/register", json=seed_user)
+            token_response = test_client.post(
+                "/auth/token",
+                data={
+                    "username": seed_user["username"],
+                    "password": seed_user["password"],
+                },
+            )
+            if token_response.status_code == 200:
+                token = token_response.json()["access_token"]
+                test_client.headers.update({"Authorization": f"Bearer {token}"})
             yield test_client
 
 

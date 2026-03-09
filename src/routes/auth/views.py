@@ -13,7 +13,7 @@ from src.routes.auth.operations import (
     verify_token,
     get_current_user,
 )
-from src.config import ACCESS_TOKEN_EXPIRE_MINUTES
+from src.config import get_access_token_expire_minutes
 from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter()
@@ -39,7 +39,7 @@ def login_for_access_token(
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
+    access_token_expires = timedelta(minutes=get_access_token_expire_minutes())
     access_token = create_access_token(
         data={"sub": db_user.username, "role": db_user.role},
         expires_delta=access_token_expires,

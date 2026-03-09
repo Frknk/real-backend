@@ -7,12 +7,14 @@ from passlib.context import CryptContext
 from src.database import get_session
 from fastapi.security import OAuth2PasswordBearer
 from sqlmodel import select
-from fastapi import Depends, HTTPException
-from src.config import SECRET_KEY, ALGORITHM
+from fastapi import Depends, HTTPException, status
+from src.config import get_secret_key, get_algorithm
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+SECRET_KEY = get_secret_key()
+ALGORITHM = get_algorithm()
 
 
 def create_user(user: UserLogin, session=Depends(get_session)):
@@ -25,12 +27,23 @@ def create_user(user: UserLogin, session=Depends(get_session)):
 
 
 def get_current_user(token: str = Depends(oauth2_scheme)):
-    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-    username: str = payload.get("sub")
-    role: str = payload.get("role")
-    if username is None:
-        raise HTTPException(status_code=400, detail="Invalid token")
-    return username, role
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        role: str = payload.get("role")
+        if username is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        return username, role
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
 
 def get_user_by_username(username: str, session=Depends(get_session)):
@@ -65,7 +78,15 @@ def verify_token(token: str = Depends(oauth2_scheme)):
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
         if username is None:
-            raise HTTPException(status_code=400, detail="Invalid token")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
         return payload
     except JWTError:
-        raise HTTPException(status_code=400, detail="Invalid token")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
