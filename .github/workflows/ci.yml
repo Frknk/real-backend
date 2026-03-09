@@ -31,10 +31,10 @@ jobs:
           enable-cache: true
 
       - name: Set up Python
-        run: uv python install
+        run: uv python install 3.13
 
       - name: Install the project
-        run: uv sync --locked --all-extras --dev
+        run: uv sync --locked --all-extras --dev --python 3.13
 
       - name: Run tests
         env:
@@ -43,4 +43,4 @@ jobs:
           ACCESS_TOKEN_EXPIRE_MINUTES: "30"
           ALLOWED_ORIGIN: "http://localhost:3000"
           DB_URL: "sqlite:///test.db"
-        run: uv run -m pytest tests
+        run: uv run --python 3.13 -m pytest tests
