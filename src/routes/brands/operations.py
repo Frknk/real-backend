@@ -47,6 +47,10 @@ def update_brand(
     brand_id: int, brand: BrandUpdate, session: Session = Depends(get_session)
 ):
     db_brand = session.get(Brand, brand_id)
+    if db_brand is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Brand not found"
+        )
     db_brand.name = brand.name
     session.add(db_brand)
     session.commit()
@@ -82,6 +86,10 @@ def delete_brand_by_name(brand_name: str, session: Session = Depends(get_session
 
 def delete_brand(brand_id: int, session: Session = Depends(get_session)):
     brand = session.get(Brand, brand_id)
+    if brand is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Brand not found"
+        )
     session.delete(brand)
     session.commit()
     return brand

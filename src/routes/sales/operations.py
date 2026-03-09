@@ -31,6 +31,8 @@ def read_sale(sale_id: int, session: Session = Depends(get_session)):
     customer = session.exec(
         select(Customer).where(Customer.dni == sale.customer_dni)
     ).first()  # Now using the actual sale's user_dni
+    if customer is None:
+        raise HTTPException(status_code=404, detail="Customer not found")
 
     customer_read = CustomerRead(
         dni=customer.dni,
@@ -69,8 +71,6 @@ def read_sales(session: Session = Depends(get_session)):
 
 
 def create_sale(sale_input: SaleCreate, session: Session = Depends(get_session)):
-    # Fetch products
-    products = []
     total_amount = 0
 
     # Check if user exists
@@ -84,6 +84,8 @@ def create_sale(sale_input: SaleCreate, session: Session = Depends(get_session))
         raise HTTPException(status_code=400, detail="No products provided")
 
     for item in sale_input.products:
+        if item.quantity <= 0:
+            raise HTTPException(status_code=400, detail="Quantity must be greater than 0")
         product = session.get(Product, item.product_id)
         if not product:
             raise HTTPException(
@@ -100,7 +102,6 @@ def create_sale(sale_input: SaleCreate, session: Session = Depends(get_session))
         product.stock -= item.quantity
 
         total_amount += product.price * item.quantity
-        products.append(product)
 
     # Create sale
     sale = Sale(customer_dni=sale_input.customer_dni, total=total_amount)

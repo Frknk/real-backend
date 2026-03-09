@@ -1,6 +1,6 @@
 import datetime
 from sqlmodel import SQLModel, Field, Relationship
-from pydantic import BaseModel
+from pydantic import BaseModel, Field as PydanticField
 from typing import Optional, List, TYPE_CHECKING
 
 from src.routes.sales.link_models import ProductSale
@@ -23,13 +23,15 @@ class Sale(SQLModel, table=True):
     products: List["Product"] = Relationship(
         back_populates="sales", link_model=ProductSale
     )
-    created_at: datetime.datetime = Field(default=datetime.datetime.now())
+    created_at: datetime.datetime = Field(
+        default_factory=lambda: datetime.datetime.now(datetime.timezone.utc)
+    )
     customer_dni: int = Field(foreign_key="customer.dni")
 
 
 class ProductSaleInput(BaseModel):
-    product_id: int
-    quantity: int = 1
+    product_id: int = PydanticField(gt=0)
+    quantity: int = PydanticField(default=1, gt=0)
 
 
 class SaleCreate(BaseModel):

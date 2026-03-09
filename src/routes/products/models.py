@@ -25,7 +25,9 @@ class Product(SQLModel, table=True):
     category: Optional["Category"] = Relationship(back_populates="products")
     brand_name: str = Field(default=None, foreign_key="brand.name")
     brand: Optional["Brand"] = Relationship(back_populates="products")
-    created_at: datetime.datetime = Field(default=datetime.datetime.now())
+    created_at: datetime.datetime = Field(
+        default_factory=lambda: datetime.datetime.now(datetime.timezone.utc)
+    )
     sales: List["Sale"] = Relationship(
         back_populates="products", link_model=ProductSale
     )
@@ -35,6 +37,7 @@ class ProductUpdate(BaseModel):
     name: Optional[str]
     description: Optional[str]
     stock: Optional[int]
+    price: Optional[float]
     provider_name: Optional[str]
     category_name: Optional[str]
     brand_name: Optional[str]

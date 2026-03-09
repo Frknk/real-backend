@@ -45,13 +45,9 @@ def update_product(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
         )
-    _product.name = product.name
-    _product.description = product.description
-    _product.stock = product.stock
-    _product.provider_name = product.provider_name
-    _product.category_name = product.category_name
-    _product.brand_name = product.brand_name
-    _product.price = product.price
+    product_data = product.model_dump(exclude_unset=True)
+    for key, value in product_data.items():
+        setattr(_product, key, value)
     session.add(_product)
     session.commit()
     session.refresh(_product)

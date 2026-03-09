@@ -69,7 +69,7 @@ def update_provider_by_name(
             status_code=status.HTTP_404_NOT_FOUND, detail="Provider not found"
         )
     _provider.name = provider.name
-    _provider.description = provider.description
+    _provider.ruc = provider.ruc
     _provider.email = provider.email
     _provider.phone = provider.phone
     _provider.address = provider.address
@@ -81,8 +81,13 @@ def update_provider_by_name(
 
 def delete_provider(provider_id: int, session: Session = Depends(get_session)):
     provider = session.get(Provider, provider_id)
+    if provider is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Provider not found"
+        )
     session.delete(provider)
     session.commit()
+    return provider
 
 
 def delete_provider_by_name(

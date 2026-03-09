@@ -1,4 +1,4 @@
-from src.routes.products.models import Product, ProductRead, ProductCreate
+from src.routes.products.models import Product, ProductRead, ProductCreate, ProductUpdate
 from src.routes.products.operations import (
     get_products,
     create_product,
@@ -30,7 +30,7 @@ def add_product(product: ProductCreate, session: Session = Depends(get_session))
 
 @router.patch("/{product_id}", response_model=Product)
 def modify_product(
-    product_id: int, product: ProductCreate, session: Session = Depends(get_session)
+    product_id: int, product: ProductUpdate, session: Session = Depends(get_session)
 ):
     return update_product(product_id, product, session)
 
