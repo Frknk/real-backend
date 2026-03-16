@@ -108,9 +108,9 @@ class TestAuthOperations:
         result = authenticate_user("nonexistentuser", "anypassword", test_session)
         assert result is False
 
-    @patch("src.routes.auth.operations.SECRET_KEY", "test_secret_key")
-    @patch("src.routes.auth.operations.ALGORITHM", "HS256")
-    def test_create_access_token(self):
+    @patch("src.routes.auth.operations.get_secret_key", return_value="test_secret_key")
+    @patch("src.routes.auth.operations.get_algorithm", return_value="HS256")
+    def test_create_access_token(self, mock_algo, mock_key):
         """Test access token creation."""
         data = {"sub": "testuser", "role": "user"}
         token = create_access_token(data)
@@ -121,9 +121,9 @@ class TestAuthOperations:
         assert decoded["role"] == "user"
         assert "exp" in decoded
 
-    @patch("src.routes.auth.operations.SECRET_KEY", "test_secret_key")
-    @patch("src.routes.auth.operations.ALGORITHM", "HS256")
-    def test_create_access_token_with_expiry(self):
+    @patch("src.routes.auth.operations.get_secret_key", return_value="test_secret_key")
+    @patch("src.routes.auth.operations.get_algorithm", return_value="HS256")
+    def test_create_access_token_with_expiry(self, mock_algo, mock_key):
         """Test access token creation with custom expiry."""
         data = {"sub": "testuser", "role": "user"}
         expires_delta = timedelta(minutes=60)
@@ -134,9 +134,9 @@ class TestAuthOperations:
         assert decoded["sub"] == "testuser"
         assert "exp" in decoded
 
-    @patch("src.routes.auth.operations.SECRET_KEY", "test_secret_key")
-    @patch("src.routes.auth.operations.ALGORITHM", "HS256")
-    def test_verify_token_valid(self):
+    @patch("src.routes.auth.operations.get_secret_key", return_value="test_secret_key")
+    @patch("src.routes.auth.operations.get_algorithm", return_value="HS256")
+    def test_verify_token_valid(self, mock_algo, mock_key):
         """Test token verification with valid token."""
         data = {"sub": "testuser", "role": "user"}
         token = create_access_token(data)
@@ -145,18 +145,18 @@ class TestAuthOperations:
         assert payload["sub"] == "testuser"
         assert payload["role"] == "user"
 
-    @patch("src.routes.auth.operations.SECRET_KEY", "test_secret_key")
-    @patch("src.routes.auth.operations.ALGORITHM", "HS256")
-    def test_verify_token_invalid(self):
+    @patch("src.routes.auth.operations.get_secret_key", return_value="test_secret_key")
+    @patch("src.routes.auth.operations.get_algorithm", return_value="HS256")
+    def test_verify_token_invalid(self, mock_algo, mock_key):
         """Test token verification with invalid token."""
         invalid_token = "invalid.token.here"
 
         with pytest.raises(Exception):  # Should raise HTTPException
             verify_token(invalid_token)
 
-    @patch("src.routes.auth.operations.SECRET_KEY", "test_secret_key")
-    @patch("src.routes.auth.operations.ALGORITHM", "HS256")
-    def test_get_current_user(self):
+    @patch("src.routes.auth.operations.get_secret_key", return_value="test_secret_key")
+    @patch("src.routes.auth.operations.get_algorithm", return_value="HS256")
+    def test_get_current_user(self, mock_algo, mock_key):
         """Test getting current user from token."""
         data = {"sub": "testuser", "role": "admin"}
         token = create_access_token(data)

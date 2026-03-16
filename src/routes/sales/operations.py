@@ -45,11 +45,8 @@ def read_sale(sale_id: int, session: Session = Depends(get_session)):
     products_details = []
     for _, product, product_sale in results:
         product_detail = ProductSaleRead(
-            name=product.name,  # Assuming you have a name field in Product
-            price=product.price,  # Assuming you have a price field in Product
-            brand=product.brand,
-            category=product.category,  # If you have a category
-            provider=product.provider,  # If applicable
+            name=product.name,
+            price=product.price,
             quantity=product_sale.quantity,
         )
         products_details.append(product_detail)
@@ -115,7 +112,6 @@ def create_sale(sale_input: SaleCreate, session: Session = Depends(get_session))
         product_sale = ProductSale(
             product_id=item.product_id, sale_id=sale.id, quantity=item.quantity
         )
-        # print(product_sale)
         session.add(product_sale)
 
     session.commit()

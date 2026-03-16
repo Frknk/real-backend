@@ -164,7 +164,6 @@ class TestCustomerEndpoints:
     def test_create_customer_success(self, client, sample_customer_data):
         """Test successful customer creation."""
         response = client.post("/customers", json=sample_customer_data)
-        print(response.json())  # Debugging line to see the response
         assert response.status_code == status.HTTP_200_OK
         created_customer = response.json()
         assert created_customer["name"] == sample_customer_data["name"]
@@ -172,49 +171,48 @@ class TestCustomerEndpoints:
         assert "id" in created_customer
 
     def test_get_customer_by_dni_success(self, client, sample_customer_data):
-        """Test getting a specific customer by ID."""
+        """Test getting a specific customer by DNI."""
         # Create a customer first
         create_response = client.post("/customers", json=sample_customer_data)
         created_customer = create_response.json()
-        customer_id = created_customer["dni"]
+        customer_dni = created_customer["dni"]
 
-        # Get the customer by ID
-        response = client.get(f"/customers/{customer_id}")
+        # Get the customer by DNI
+        response = client.get(f"/customers/{customer_dni}")
 
         assert response.status_code == status.HTTP_200_OK
         customer = response.json()
-        assert customer["dni"] == customer_id
+        assert customer["dni"] == customer_dni
         assert customer["name"] == sample_customer_data["name"]
 
-    # def test_update_customer_success(self, client, sample_customer_data):
-    #     """Test successful customer update."""
-    #     # Create a customer first
-    #     create_response = client.post("/customers", json=sample_customer_data)
-    #     created_customer = create_response.json()
-    #     customer_id = created_customer["id"]
-    #
-    #     # Update the customer
-    #     update_data = sample_customer_data.copy()
-    #     update_data["name"] = "Updated Customer Name"
-    #
-    #     response = client.patch(f"/customers/{customer_id}", json=update_data)
-    #
-    #     assert response.status_code == status.HTTP_200_OK
-    #     updated_customer = response.json()
-    #     assert updated_customer["name"] == "Updated Customer Name"
-    #
-    # def test_delete_customer_success(self, client, sample_customer_data):
-    #     """Test successful customer deletion."""
-    #     # Create a customer first
-    #     create_response = client.post("/customers", json=sample_customer_data)
-    #     created_customer = create_response.json()
-    #     customer_id = created_customer["id"]
-    #
-    #     # Delete the customer
-    #     response = client.delete(f"/customers/{customer_id}")
-    #
-    #     assert response.status_code == status.HTTP_200_OK
-    #
-    #     # Verify customer is deleted
-    #     get_response = client.get(f"/customers/{customer_id}")
-    #     assert get_response.status_code == status.HTTP_404_NOT_FOUND
+    def test_update_customer_success(self, client, sample_customer_data):
+        """Test successful customer update."""
+        # Create a customer first
+        create_response = client.post("/customers", json=sample_customer_data)
+        created_customer = create_response.json()
+        customer_id = created_customer["id"]
+
+        # Update the customer
+        update_data = {"name": "Updated Customer Name"}
+
+        response = client.patch(f"/customers/{customer_id}", json=update_data)
+
+        assert response.status_code == status.HTTP_200_OK
+        updated_customer = response.json()
+        assert updated_customer["name"] == "Updated Customer Name"
+
+    def test_delete_customer_success(self, client, sample_customer_data):
+        """Test successful customer deletion."""
+        # Create a customer first
+        create_response = client.post("/customers", json=sample_customer_data)
+        created_customer = create_response.json()
+        customer_id = created_customer["id"]
+
+        # Delete the customer
+        response = client.delete(f"/customers/{customer_id}")
+
+        assert response.status_code == status.HTTP_200_OK
+
+        # Verify customer is deleted
+        get_response = client.get(f"/customers/{sample_customer_data['dni']}")
+        assert get_response.status_code == status.HTTP_404_NOT_FOUND

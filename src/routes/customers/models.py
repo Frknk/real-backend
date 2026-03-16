@@ -10,6 +10,13 @@ class Customer(SQLModel, table=True):
     last_name: str
     email: str
 
+    @field_validator("email")
+    @classmethod
+    def email_must_contain_at(cls, v):
+        if "@" not in v:
+            raise ValueError("Invalid email format")
+        return v
+
     @field_validator("dni")
     @classmethod
     def dni_must_eight_digits(cls, v):
@@ -24,6 +31,12 @@ class CustomerCreate(BaseModel):
     name: str
     last_name: str
     email: str
+
+
+class CustomerUpdate(BaseModel):
+    name: Optional[str] = None
+    last_name: Optional[str] = None
+    email: Optional[str] = None
 
 
 class CustomerRead(BaseModel):

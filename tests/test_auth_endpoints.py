@@ -105,16 +105,19 @@ class TestAuthEndpoints:
         assert response.status_code in [400, 401, 422]
 
     def test_protected_endpoint_without_token(self, client):
-        """Test accessing protected endpoint without token."""
-        # This would depend on having a protected endpoint
-        # Since we don't see the full verify_token endpoint, we'll test with a hypothetical protected route
-        pass
+        """Test accessing protected endpoint without token returns 401."""
+        saved_auth = client.headers.pop("Authorization", None)
+        try:
+            response = client.get("/auth/test")
+            assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        finally:
+            if saved_auth:
+                client.headers["Authorization"] = saved_auth
 
     def test_protected_endpoint_with_valid_token(self, client, authenticated_headers):
-        """Test accessing protected endpoint with valid token."""
-        # This would test a protected endpoint with proper authentication
-        # Implementation depends on actual protected endpoints in the system
-        pass
+        """Test accessing protected endpoint with valid token returns 200."""
+        response = client.get("/auth/test", headers=authenticated_headers)
+        assert response.status_code == status.HTTP_200_OK
 
 
 class TestAuthIntegration:

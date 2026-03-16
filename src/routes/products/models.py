@@ -17,13 +17,13 @@ class Product(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     name: str
     description: str
-    stock: int = Field(default=0)
+    stock: int = Field(default=0, ge=0)
     price: float = Field(default=0)
     provider_name: str | None = Field(default=None, foreign_key="provider.name")
     provider: Optional["Provider"] = Relationship(back_populates="products")
     category_name: str | None = Field(default=None, foreign_key="category.name")
     category: Optional["Category"] = Relationship(back_populates="products")
-    brand_name: str = Field(default=None, foreign_key="brand.name")
+    brand_name: str | None = Field(default=None, foreign_key="brand.name")
     brand: Optional["Brand"] = Relationship(back_populates="products")
     created_at: datetime.datetime = Field(
         default_factory=lambda: datetime.datetime.now(datetime.timezone.utc)
@@ -46,7 +46,7 @@ class ProductUpdate(BaseModel):
 class ProductCreate(BaseModel):
     name: str
     description: str
-    stock: int
+    stock: int = Field(ge=0)
     price: float
     provider_name: str
     category_name: str

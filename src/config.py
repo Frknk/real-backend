@@ -2,7 +2,12 @@ import os
 
 
 def get_secret_key() -> str:
-    return os.getenv("SECRET_KEY", "change-this-secret-key")
+    secret = os.getenv("SECRET_KEY")
+    if not secret:
+        if os.getenv("TESTING"):
+            return "testing-secret-key"
+        raise RuntimeError("SECRET_KEY environment variable is not set")
+    return secret
 
 
 def get_algorithm() -> str:
@@ -30,8 +35,7 @@ def get_db_url() -> str:
     return os.getenv("DB_URL", "sqlite:///./app.db")
 
 
-# Backward-compatible constants.
-SECRET_KEY = get_secret_key()
+# Backward-compatible constants (lazy for SECRET_KEY to avoid import-time errors).
 ALGORITHM = get_algorithm()
 ACCESS_TOKEN_EXPIRE_MINUTES = get_access_token_expire_minutes()
 ALLOWED_ORIGIN = ",".join(get_allowed_origins())

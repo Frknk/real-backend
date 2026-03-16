@@ -13,8 +13,6 @@ from src.config import get_secret_key, get_algorithm
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-SECRET_KEY = get_secret_key()
-ALGORITHM = get_algorithm()
 
 
 def create_user(user: UserLogin, session=Depends(get_session)):
@@ -28,7 +26,7 @@ def create_user(user: UserLogin, session=Depends(get_session)):
 
 def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, get_secret_key(), algorithms=[get_algorithm()])
         username: str = payload.get("sub")
         role: str = payload.get("role")
         if username is None:
@@ -69,13 +67,13 @@ def create_access_token(data: dict, expires_delta: datetime.timedelta | None = N
             minutes=15
         )
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, get_secret_key(), algorithm=get_algorithm())
     return encoded_jwt
 
 
 def verify_token(token: str = Depends(oauth2_scheme)):
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, get_secret_key(), algorithms=[get_algorithm()])
         username: str = payload.get("sub")
         if username is None:
             raise HTTPException(
